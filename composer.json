@@ -43,6 +43,7 @@
     "type": "library",
     "require": {
         "phpunit/phpunit": "^9.0"
+        "php": "^8.2"
     },
     "require-dev": {
         "zetacomponents/coding-standard": "^1.0"

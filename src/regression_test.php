@@ -35,9 +35,9 @@ abstract class ezcTestRegressionTest extends ezcTestCase
      * How to sort the test files: 'mtime' sorts by modification time, any other
      * value sorts by name.
      */
-    const SORT_MODE = 'name';
+    final public const SORT_MODE = 'name';
 
-    protected $files = array();
+    protected $files = [];
     protected $currentFile;
 
     public function __construct()
@@ -47,7 +47,7 @@ abstract class ezcTestRegressionTest extends ezcTestCase
             // Sort by modification time to get updated tests first
             usort(
                 $this->files,
-                array( $this, 'sortTestsByMtime' )
+                $this->sortTestsByMtime(...)
             );
         }
         else
@@ -55,10 +55,9 @@ abstract class ezcTestRegressionTest extends ezcTestCase
             // Sort it, then the file a.in will be processed first. Handy for development.
             usort(
                 $this->files,
-                array( $this, 'sortTestsByName' )
+                $this->sortTestsByName(...)
             );
         }
-        parent::__construct();
     }
 
     public function getName( bool $withDataSet = TRUE ) : string
@@ -78,7 +77,7 @@ abstract class ezcTestRegressionTest extends ezcTestCase
 
     protected function readDirRecursively( $dir, &$total, $onlyWithExtension = false )
     {
-        $extensionLength = strlen( $onlyWithExtension );
+        $extensionLength = strlen( (string) $onlyWithExtension );
         $path = opendir( $dir );
 
         if ( $path === false )
@@ -97,8 +96,10 @@ abstract class ezcTestRegressionTest extends ezcTestCase
                     if ( !$onlyWithExtension ||
                          substr( $file,  -$extensionLength - 1 ) === ".{$onlyWithExtension}" )
                     {
-                        $total[] = array( 'file' => $new,
-                                          'mtime' => filemtime( $new ) );
+                        $total[] = [
+                            'file' => $new,
+                            'mtime' => filemtime( $new )
+                        ];
                     }
                 }
                 elseif ( is_dir( $new ) )
@@ -115,17 +116,17 @@ abstract class ezcTestRegressionTest extends ezcTestCase
         {
             return $a['mtime'] < $b['mtime'] ? 1 : -1;
         }
-        return strnatcmp( $a['file'], $b['file'] );
+        return strnatcmp( (string) $a['file'], (string) $b['file'] );
     }
 
     protected function sortTestsByName( $a, $b )
     {
-        return strnatcmp( $a['file'], $b['file'] );
+        return strnatcmp( (string) $a['file'], (string) $b['file'] );
     }
 
     protected function outFileName( $file, $inExtension, $outExtension = '.out' )
     {
-        $baseFile = substr( $file, 0, strlen( $file ) - strlen( $inExtension ) );
+        $baseFile = substr( (string) $file, 0, strlen( (string) $file ) - strlen( (string) $inExtension ) );
         return $baseFile . $outExtension;
     }
 
@@ -133,7 +134,7 @@ abstract class ezcTestRegressionTest extends ezcTestCase
     {
         if ( $this->currentFile === false )
         {
-            throw new PHPUnit\Framework\ExpectationFailedException( "No currentFile set for test " . __CLASS__ );
+            throw new PHPUnit\Framework\ExpectationFailedException( "No currentFile set for test " . self::class );
         }
 
         $exception = null;
@@ -159,7 +160,7 @@ abstract class ezcTestRegressionTest extends ezcTestCase
 
     public static function suite()
     {
-        return new PHPUnit\Framework\TestSuite( __CLASS__ );
+        return new PHPUnit\Framework\TestSuite( self::class );
     }
 }
 ?>

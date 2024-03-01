@@ -25,11 +25,11 @@
  * @package UnitTest
  */
 
-return array(
+return [
     'ezcTestCase'                   => 'UnitTest/test/case.php',
     'ezcTestConstraintSimilarImage' => 'UnitTest/constraint/image.php',
     'ezcTestImageCase'              => 'UnitTest/test/image_case.php',
     'ezcTestRegressionSuite'        => 'UnitTest/regression_suite.php',
-    'ezcTestRegressionTest'         => 'UnitTest/regression_test.php',
-);
+    'ezcTestRegressionTest'         => 'UnitTest/regression_test.php'
+];
 ?>

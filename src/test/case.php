@@ -36,7 +36,7 @@ abstract class ezcTestCase extends PHPUnit\Framework\TestCase
      * Do not mess with the temp dir, otherwise the removeTempDirectory might
      * remove the wrong directory.
      */
-    private $tempDir;
+    private ?string $tempDir = null;
 
     /**
      * Creates and returns the temporary directory.
@@ -107,7 +107,7 @@ abstract class ezcTestCase extends PHPUnit\Framework\TestCase
         if ( is_file( $entry ) || is_link( $entry ) )
         {
             // Some extra security that you're not erasing your harddisk :-).
-            if ( strncmp( $this->tempDir, $entry, strlen( $this->tempDir ) ) == 0 )
+            if ( strncmp( (string) $this->tempDir, (string) $entry, strlen( (string) $this->tempDir ) ) == 0 )
             {
                 return unlink( $entry );
             }
@@ -162,7 +162,7 @@ abstract class ezcTestCase extends PHPUnit\Framework\TestCase
             {
                 $object->$propertyName = $value;
             }
-            catch ( Exception $e )
+            catch ( Exception )
             {
                 continue;
             }

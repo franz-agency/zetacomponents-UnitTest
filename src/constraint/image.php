@@ -84,7 +84,7 @@ class ezcTestConstraintSimilarImage extends PHPUnit\Framework\Constraint\Constra
      * @return bool
      * @abstract
      */
-    public function evaluate( $other, $description = '', $returnResult = false )
+    public function evaluate( mixed $other, $description = '', $returnResult = false ): ?bool
     {
         if ( !is_string( $other ) ||
              !is_file( $other ) ||
@@ -93,11 +93,11 @@ class ezcTestConstraintSimilarImage extends PHPUnit\Framework\Constraint\Constra
             throw new ezcBaseFileNotFoundException( $other );
         }
 
-        $descriptors = array(
-            array( 'pipe', 'r' ),
-            array( 'pipe', 'w' ),
-            array( 'pipe', 'w' ),
-        );
+        $descriptors = [
+            ['pipe', 'r'],
+            ['pipe', 'w'],
+            ['pipe', 'w']
+        ];
         $command = sprintf(
             'compare -metric MAE %s %s null:',
             escapeshellarg( $this->filename ),
@@ -154,7 +154,7 @@ class ezcTestConstraintSimilarImage extends PHPUnit\Framework\Constraint\Constra
      * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit\Framework\ExpectationFailedException
      */
-    public function fail( $other, $description, SebastianBergmann\Comparator\ComparisonFailure $comparisonFailure = NULL ) : void
+    public function fail( mixed $other, $description, SebastianBergmann\Comparator\ComparisonFailure $comparisonFailure = NULL ) : void
     {
         $failureDescription = sprintf(
             'Failed asserting that image "%s" is similar to image "%s".',
